@@ -1,4 +1,4 @@
-import { getMirrorPosts, getMirrorPostsByDigest } from '../getPosts';
+import { getMirrorPostsByContributor, getMirrorPostsByDigest } from '../getPosts';
 
 describe("get mirror posts", () => {
 	test('get posts by digest', async () => {

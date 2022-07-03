@@ -7,7 +7,7 @@ posts on arweave have a `Contributor` tag which corresponds to a wallet address,
 ```javascript
 const sartoshiAddress = "0xeD98464BDA3cE53a95B50f897556bEDE4316361c"
 const limit = 5
-const posts = await getMirrorPosts(sartoshiAddress, limit);
+const posts = await getMirrorPostsByContributor(sartoshiAddress, limit);
 console.log(posts.map((post: any) => { return post.content.title }));
 ```
 

@@ -1,14 +1,14 @@
 import Arweave from 'arweave';
 import { getTransactionIds, getTransactionIdsByDigest } from './getTransactionIds';
 
-// Arweave object using the public arweave.net endpoint.
+// An Arweave object using the public arweave.net endpoint
 const arweave = Arweave.init({
 	host: 'arweave.net',
 	port: 443,
 	protocol: 'https'
 });
 
-// Gets Arweave transaction data for the given transaction ID.
+// Gets Arweave transaction data for the given transaction ID
 export const getTransactionData = async (id: string) => {
 	console.log('getting data for id ' + id);
 	const result = await arweave.transactions.getData(id, { decode: true, string: true }) as string
@@ -16,8 +16,8 @@ export const getTransactionData = async (id: string) => {
 	return json
 }
 
-// Gets an array of Mirror posts authored by the contributor address from Arweave
-export const getMirrorPosts = async (address: string, limit: number) => {
+// Gets a list of posts with a `contributor` tag matching the given address
+export const getMirrorPostsByContributor = async (address: string, limit: number) => {
 
 	// get the transaction ids for the addy
 	const ids = await getTransactionIds(address, limit);
@@ -34,7 +34,7 @@ export const getMirrorPosts = async (address: string, limit: number) => {
 	return posts;
 }
 
-// Gets an array of Mirror posts authored by the contributor address from Arweave
+// Gets a list of posts with an `original content digest` matching the given digest (i.e. gets a specific post by its unique identifier)
 export const getMirrorPostsByDigest = async (digest: string, limit: number) => {
 
 	// get the transaction ids for the addy
