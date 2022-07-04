@@ -31,7 +31,7 @@ export const getMirrorPostsByContributor = async (address: string, limit: number
 
 	// return just an array of the post objects, not the table indexed by digests
 	const posts: any[] = Object.values(uniquePosts);
-	return posts;
+	return posts as MirrorPost[];
 }
 
 // Gets a list of posts with an `original content digest` matching the given digest (i.e. gets a specific post by its unique identifier)
@@ -49,5 +49,21 @@ export const getMirrorPostsByDigest = async (digest: string, limit: number) => {
 
 	// return just an array of the post objects, not the table indexed by digests
 	const posts: any[] = Object.values(uniquePosts);
-	return posts;
+	return posts as MirrorPost[];
+}
+
+type MirrorPost = {
+	content: {
+		body: string;
+		title: string;
+		timestamp: number;
+	};
+	digest: string;
+	version: string;
+	originalDigest: string;
+	nft: any,
+	authorship: {
+		signature: string;
+		contributor: string;
+	}
 }
