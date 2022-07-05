@@ -35,7 +35,7 @@ export const getMirrorPostsByContributor = async (address: string, limit: number
 }
 
 // Gets a list of posts with an `original content digest` matching the given digest (i.e. gets a specific post by its unique identifier)
-export const getMirrorPostsByDigest = async (digest: string, limit: number) => {
+export const getMirrorPostByDigest = async (digest: string, limit: number) => {
 
 	// get the transaction ids for the addy
 	const ids = await getTransactionIdsByDigest(digest, limit);

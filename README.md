@@ -12,8 +12,7 @@ console.log(posts.map((post: any) => { return post.content.title }));
 ```
 
 ## get a specific post by digest
-posts have `Content-Digest` and `Original-Content-Digest` tags. the _original_ content digest identifies a specific "post"; the plain content
-digest identifies each published "commit" of that post. when we query by `Original-Content-Digest` we get a list of all these transactions sorted by block height. the first transaction will be the lastest version of the post.
+get the latest version of a given post using its `Original-Content-Digest` tag:
 ```javascript
 const originalContentDigest = "GjssNdA6XK7VYynkvwDem3KYwPACSU9nDWpR5rei3hw"
 const limit = 1
