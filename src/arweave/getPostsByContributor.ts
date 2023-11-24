@@ -41,6 +41,7 @@ export async function getPostsByContributor(address: string, limit: number): Pro
 
 		if (originalDigest) {
 			json.originalDigest = originalDigest
+			json.block = txn.block
 			posts.push(json);
 		}
 	}

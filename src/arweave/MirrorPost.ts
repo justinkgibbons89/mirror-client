@@ -6,6 +6,7 @@ export type MirrorPost = {
 	txnId?: string;
 	version: string;
 	nft: any,
+	block: number,
 	// the author of the post
 	authorship: {
 		// proof of ownership
