@@ -1,3 +1,5 @@
+import { ArweaveTxnBlock } from "./getTransactionMetadata";
+
 export type MirrorPost = {
 	// uniquely identifies this version of the post
 	digest: string;
@@ -6,7 +8,8 @@ export type MirrorPost = {
 	txnId?: string;
 	version: string;
 	nft: any,
-	block: number,
+	// block height and timestamp
+	block: ArweaveTxnBlock,
 	// the author of the post
 	authorship: {
 		// proof of ownership

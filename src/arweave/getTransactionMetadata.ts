@@ -28,6 +28,7 @@ export const getTransactionMetadata = async (address: string, limit: number) => 
             	id
 				block {
 					timestamp
+					height
 				}
 				tags {
 					name
@@ -42,6 +43,75 @@ export const getTransactionMetadata = async (address: string, limit: number) => 
 	const txns: ArweaveTxn[] = response.data.transactions.edges.map((edge: any) => { return edge.node })
 
 	return txns;
+}
+
+export async function getBlockTransactions({ startHeight, endHeight, after, first }: {
+	startHeight: number,
+	endHeight: number,
+	first?: number,
+	after?: string
+}) {
+
+	const query = gql`
+		query MirrorPosts($startHeight: Int!, $endHeight: Int, $first: Int, $after: String) {
+  			transactions(tags: [
+      			{ 
+        			name: "App-Name",
+        			values: ["MirrorXYZ"]
+      			}
+    		], 
+				sort: HEIGHT_DESC, 
+				first: $first, 
+				after: $after,
+				block: { min: $startHeight, max: $endHeight }
+			) {
+				pageInfo {
+					hasNextPage
+				}
+				edges {
+					cursor
+					node {
+						id
+						block {
+							timestamp
+							height
+						}
+						tags {
+							name
+							value
+						}
+					}
+        	}
+    	}
+	}
+	`
+	const response = await client.query({ query, variables: { startHeight, endHeight, first, after } })
+
+	return response as TransactionsResult
+}
+
+interface TransactionsResult {
+	data: {
+		transactions: {
+			pageInfo: {
+				hasNextPage: boolean
+			}
+			edges: {
+				cursor: string
+				node: {
+					id: string
+					block: {
+						timestamp: number
+						height: number
+					}
+					tags: {
+						name: string
+						value: string
+					}[]
+				}
+			}[]
+		}
+	}
 }
 
 /// Gets a list of transaction IDs for the given contributor address.
@@ -97,6 +167,7 @@ export interface ArweaveTxnTag {
 
 export interface ArweaveTxnBlock {
 	timestamp: number
+	height: number
 }
 
 export function getTag(txn: ArweaveTxn, name: string) {
