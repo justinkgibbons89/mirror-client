@@ -57,6 +57,7 @@ export async function getPostForTxn(txn: ArweaveTxn): Promise<MirrorPost | null>
 	if (originalDigest) {
 		json.originalDigest = originalDigest
 		json.block = txn.block
+		json.txnId = txn.id
 		post = json;
 	}
 

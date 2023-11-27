@@ -2,7 +2,7 @@ import { MirrorPost } from "./MirrorPost";
 import { getLatestTxnByOriginalDigest, getPostForTxn } from "./getPostsByContributor";
 import { ArweaveTxn, getBlockTransactions } from "./getTransactionMetadata";
 
-export async function indexBlocks(startHeight: number, endHeight: number, handler: (posts: MirrorPost[]) => void) {
+export async function indexBlocks({ startHeight, endHeight }: { startHeight: number, endHeight?: number }, handler: (posts: MirrorPost[]) => void) {
 
 	let hasNextPage = true
 	let after: string | undefined
@@ -26,7 +26,7 @@ export async function getPostsInBlockRange({
 	after
 }: {
 	startHeight: number,
-	endHeight: number,
+	endHeight?: number,
 	first?: number,
 	after?: string
 }): Promise<{

@@ -47,7 +47,7 @@ export const getTransactionMetadata = async (address: string, limit: number) => 
 
 export async function getBlockTransactions({ startHeight, endHeight, after, first }: {
 	startHeight: number,
-	endHeight: number,
+	endHeight?: number,
 	first?: number,
 	after?: string
 }) {
@@ -60,7 +60,7 @@ export async function getBlockTransactions({ startHeight, endHeight, after, firs
         			values: ["MirrorXYZ"]
       			}
     		], 
-				sort: HEIGHT_DESC, 
+				sort: HEIGHT_ASC, 
 				first: $first, 
 				after: $after,
 				block: { min: $startHeight, max: $endHeight }
