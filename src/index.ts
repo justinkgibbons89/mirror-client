@@ -1,6 +1,3 @@
-import { getBlockTransactions } from './arweave/getTransactionMetadata';
-import indexBlocks from './arweave/indexBlocks';
-
 export * from './hooks/usePosts';
 export * from './arweave/MirrorPost';
 export * from './hooks/usePost';
