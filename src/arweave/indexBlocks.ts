@@ -9,13 +9,13 @@ export async function indexBlocks({ startHeight, endHeight }: { startHeight: num
 
 	while (hasNextPage) {
 		// get posts for block range
-		const result = await getPostsInBlockRange({ startHeight, endHeight, first: 5, after })
+		const result = await getPostsInBlockRange({ startHeight, endHeight, first: 100, after })
 		hasNextPage = result.hasNextPage
 		after = result.cursor
 
 		// insert posts into database
 		// insertPosts(result.posts)
-		handler(result.posts)
+		await handler(result.posts)
 	}
 }
 
