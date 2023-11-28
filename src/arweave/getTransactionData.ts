@@ -7,7 +7,7 @@ export const getTransactionData = async (id: string) => {
 	const contentDomain = ArweaveCDN
 	const endpoint = `${contentDomain}/${id}`
 
-	console.log("Fetching... ", `${contentDomain}/${id}`);
+	console.log("Fetching ", `${contentDomain}/${id}`);
 
 	const response = await fetch(`${contentDomain}/${id}`)
 		.then(res => res.json())

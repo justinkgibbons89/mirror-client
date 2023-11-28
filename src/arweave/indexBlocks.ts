@@ -2,23 +2,6 @@ import { MirrorPost } from "./MirrorPost";
 import { getLatestTxnByOriginalDigest, getPostForTxn } from "./getPostsByContributor";
 import { ArweaveTxn, getBlockTransactions } from "./getTransactionMetadata";
 
-export async function indexBlocks({ startHeight, endHeight }: { startHeight: number, endHeight?: number }, handler: (posts: MirrorPost[]) => void) {
-
-	let hasNextPage = true
-	let after: string | undefined
-
-	while (hasNextPage) {
-		// get posts for block range
-		const result = await getPostsInBlockRange({ startHeight, endHeight, first: 100, after })
-		hasNextPage = result.hasNextPage
-		after = result.cursor
-
-		// insert posts into database
-		// insertPosts(result.posts)
-		await handler(result.posts)
-	}
-}
-
 export async function getPostsInBlockRange({
 	startHeight,
 	endHeight,
@@ -34,7 +17,7 @@ export async function getPostsInBlockRange({
 	hasNextPage: boolean,
 	cursor: string | undefined
 }> {
-	console.log(`Fetching txns from ${startHeight} to ${endHeight}, cursor ${after}...`)
+	console.log(`Fetching txns from ${startHeight} to ${endHeight || "LATEST"}, cursor: ${after}`)
 	const txnsResult = await getBlockTransactions({ startHeight, endHeight, first, after });
 	let hasNextPage = txnsResult.data.transactions.pageInfo.hasNextPage
 	let cursor = txnsResult.data.transactions.edges[txnsResult.data.transactions.edges.length - 1].cursor
@@ -54,12 +37,4 @@ export async function getPostsInBlockRange({
 	console.log(`${posts.length} posts`)
 
 	return { posts, hasNextPage, cursor }
-}
-
-function insertPosts(posts: MirrorPost[]) {
-	// insert posts into database
-	console.log(`Inserting ${posts.length} posts:`)
-	for (const post of posts) {
-		console.log(post.content.title)
-	}
 }
