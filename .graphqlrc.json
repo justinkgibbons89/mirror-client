@@ -1,0 +1,6 @@
+{
+	"schema": "https://arweave.net/graphql",
+	"documents": [
+		"src/**/*.{graphql,js,ts,jsx,tsx}"
+	]
+}

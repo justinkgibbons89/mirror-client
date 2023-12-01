@@ -2,17 +2,28 @@
 import { GraphQLEndpoint, OriginalDigestTag } from '../constants'
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
 	uri: GraphQLEndpoint,
 	cache: new InMemoryCache(),
 });
 
 /// Gets a list of transaction IDs for the given contributor address.
 /// Transactions are pulled from the Arweave GraphQL endpoint.
-export const getTransactionMetadata = async (address: string, limit: number) => {
+export async function getTransactionMetadata({
+	address,
+	first = 100,
+	sort = "HEIGHT_DESC",
+	after
+}: {
+	address: string,
+	first: number,
+	sort?: "HEIGHT_DESC" | "HEIGHT_ASC",
+	after?: string
+}) {
+
 
 	const query = gql`
-		query MirrorPosts($address: String!, $limit: Int) {
+		query MirrorPostsByContrib($address: String!, $first: Int, $sort: SortOrder, $after: String) {
   			transactions(tags: [
       			{ 
         			name: "App-Name",
@@ -22,24 +33,29 @@ export const getTransactionMetadata = async (address: string, limit: number) => 
         			name: "Contributor",
         			values: [$address]
       			}
-    		], sort: HEIGHT_DESC, first: $limit) {
-        	edges {
-        	node {
-            	id
-				block {
-					timestamp
-					height
+    		], sort: $sort, first: $first, after: $after) {
+				pageInfo {
+					hasNextPage
 				}
-				tags {
-					name
-					value
-				}
-        	}
+				edges {
+					cursor
+					node {
+						id
+						block {
+							timestamp
+							height
+						}
+						tags {
+							name
+							value
+						}
+					}
         	}
     	}
 	}
 	`
-	const response = await client.query({ query, variables: { address, limit } })
+
+	const response = await client.query({ query, variables: { address, first, sort, after } })
 	const txns: ArweaveTxn[] = response.data.transactions.edges.map((edge: any) => { return edge.node })
 
 	return txns;
@@ -53,7 +69,7 @@ export async function getBlockTransactions({ startHeight, endHeight, after, firs
 }) {
 
 	const query = gql`
-		query MirrorPosts($startHeight: Int!, $endHeight: Int, $first: Int, $after: String) {
+		query MirrorPostsByBlock($startHeight: Int!, $endHeight: Int, $first: Int, $after: String) {
   			transactions(tags: [
       			{ 
         			name: "App-Name",
@@ -86,7 +102,6 @@ export async function getBlockTransactions({ startHeight, endHeight, after, firs
 	}
 	`
 	const response = await client.query({ query, variables: { startHeight, endHeight, first, after } })
-
 	return response as TransactionsResult
 }
 
@@ -122,7 +137,7 @@ export async function getTransactionMetadataByDigest({ originalDigest }:
 	}) {
 
 	const query = gql`
-		query MirrorPosts($originalDigest: String!) {
+		query MirrorPostsByDigest($originalDigest: String!) {
   			transactions(tags: [
       			{ 
         			name: "App-Name",

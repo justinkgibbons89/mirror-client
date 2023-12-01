@@ -36,5 +36,6 @@ export async function getPostsInBlockRange({
 	}
 	console.log(`${posts.length} posts`)
 
+
 	return { posts, hasNextPage, cursor }
 }

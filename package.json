@@ -9,7 +9,8 @@
 		"restart": "node js/index.js",
 		"build": "npx tsc",
 		"prepare": "npm run build",
-		"clean": "rm -rf ./js/"
+		"clean": "rm -rf ./js/",
+		"codegen": "graphql-codegen --config codegen.ts"
 	},
 	"keywords": [],
 	"author": "",
@@ -17,17 +18,26 @@
 	"dependencies": {
 		"@apollo/client": "^3.8.5",
 		"ardb": "^1.1.10",
+		"arweave": "^1.14.4",
+		"axios": "^1.6.2",
 		"graphql": "^16.5.0",
+		"graphql-request": "^6.1.0",
+		"graphql-tag": "^2.12.6",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
 	},
 	"devDependencies": {
+		"@graphql-codegen/cli": "5.0.0",
+		"@graphql-codegen/client-preset": "^4.1.0",
+		"@graphql-codegen/typescript": "4.0.1",
+		"@graphql-codegen/typescript-document-nodes": "4.0.1",
+		"@parcel/watcher": "^2.3.0",
 		"@types/jest": "^28.1.4",
 		"@types/node": "^18.0.1",
 		"@types/react": "^18.2.25",
 		"@types/react-dom": "^18.2.11",
 		"jest": "^28.1.2",
 		"ts-jest": "^28.0.5",
-		"typescript": "^5.2.2"
+		"typescript": "^5.3.2"
 	}
 }

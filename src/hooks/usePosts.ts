@@ -13,7 +13,7 @@ export function usePosts({ address, limit }: {
 	async function getPosts() {
 		setLoading(true);
 		try {
-			const response = await getPostsByContributor(address, limit || 25);
+			const response = await getPostsByContributor({ address, first: limit || 100 });
 			setPosts(response);
 
 		} catch (e: any) {
